@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root) // R.layout.activity_main
 
-
+        productList.add(Product(1, "Sac à dos", 29.99f, ""))
 
         // Products recyclerView
         val recyclerViewVariable = binding.productsRecyclerView
