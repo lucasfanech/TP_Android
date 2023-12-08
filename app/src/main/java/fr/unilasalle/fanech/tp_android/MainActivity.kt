@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root) // R.layout.activity_main
         run("https://fakestoreapi.com/products")
-
-
         // Products recyclerView
         val recyclerViewVariable = binding.productsRecyclerView
         productsAdapter = ProductsAdapter(productList)
@@ -34,11 +32,6 @@ class MainActivity : AppCompatActivity() {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@MainActivity)
             adapter = productsAdapter
         }
-
-
-
-
-
 
     }
 
