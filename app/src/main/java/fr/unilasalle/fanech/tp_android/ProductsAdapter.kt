@@ -20,10 +20,16 @@ class ProductsAdapter(
         val title: TextView = itemView.findViewById(R.id.productTitle)
         val price: TextView = itemView.findViewById(R.id.productPrice)
         val image: ImageView = itemView.findViewById(R.id.productImage)
+        val addToCartImage : ImageView = itemView.findViewById(R.id.addToCart)
         fun bind(item: Product) {
             title.text = item.title
             price.text = item.price.toString() + "€"
             Glide.with(itemView.context).load(item.image).into(image)
+
+            addToCartImage.setOnClickListener{
+                listener.oncClickAddToCart(item)
+            }
+
             itemView.setOnClickListener {
                 listener.onClick(item)
             }
@@ -33,6 +39,7 @@ class ProductsAdapter(
 
     interface OnClickListener {
         fun onClick(position: Product)
+        fun oncClickAddToCart(position: Product)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

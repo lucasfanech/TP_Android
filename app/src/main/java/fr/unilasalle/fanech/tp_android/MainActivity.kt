@@ -1,8 +1,10 @@
 package fr.unilasalle.fanech.tp_android
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import fr.unilasalle.fanech.tp_android.databinding.ActivityMainBinding
@@ -19,20 +21,32 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
     private lateinit var productsAdapter: ProductsAdapter
     private val client = OkHttpClient()
     private var productList = ArrayList<Product>()
+    private var cartList    = ArrayList<Product>()
     private lateinit var viewModel: RetrofitViewModel
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val intent = Intent(applicationContext, ProductActivity::class.java)
         setContentView(binding.root) // R.layout.activity_main
 
+
+        productList.add(Product(1,"Album C'est pas des LOL",9.99f,"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnDwLhK-z_u-lD0AUlHyeKZ5Wgb5yn6s6_fg&usqp=CAU","Meilleur album du J","test",Rating(1.0f,1)))
+
         viewModel = RetrofitViewModel(RetrofitApi.getService())
         viewModel.products.observe(this) {
-            for (product in it) {
-                productList.add(product)
+            if (it != null) {
+                for (product in it) {
+                    productList.add(product)
+                }
+            } else {
+                print("error")
             }
+
+
+
             productsAdapter.notifyDataSetChanged()
         }
         // Products recyclerView
@@ -52,19 +66,17 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
 
     }
 
+    override fun oncClickAddToCart(position: Product) {
+        cartList.add(position)
+        // Pop up message
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Ajout au panier")
+    }
     override fun onClick(product: Product)
     {
         print("clicked")
-        val intent = Intent(applicationContext, ProductActivity::class.java)
-        intent.putExtra("id", product.id.toString());
-        intent.putExtra("title", product.title);
-        intent.putExtra("price", product.price.toString());
-        intent.putExtra("image", product.image);
-        intent.putExtra("description", product.description);
-        intent.putExtra("category", product.category);
-        intent.putExtra("rate", product.rating.rate.toString());
-        intent.putExtra("count", product.rating.count.toString());
-
+        val intent = Intent(applicationContext, ProductActivity::class.java);
+        intent.putExtra("product", product);
         startActivity(intent)
 
     }

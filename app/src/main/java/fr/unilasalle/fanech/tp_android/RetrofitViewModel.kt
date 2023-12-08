@@ -13,6 +13,8 @@ class RetrofitViewModel(private val retrofitService: RetrofitService) : ViewMode
     val products: LiveData<List<Product>>
         get() = _products
 
+
+
     init {
         viewModelScope.launch {
             _products.value = retrofitService.getProducts()
