@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class ProductsAdapter(private var productList : ArrayList<Product>) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>(){
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -15,7 +16,7 @@ class ProductsAdapter(private var productList : ArrayList<Product>) : RecyclerVi
         fun bind(item: Product) {
             title.text = item.getTitle();
             price.text = item.getPrice().toString();
-            // TODO: image
+            Glide.with(itemView.context).load(item.getImage()).into(image)
         }
     }
 

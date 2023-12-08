@@ -20,14 +20,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productsRecyclerView"
-        android:layout_width="235dp"
-        android:layout_height="270dp"
+        android:layout_width="349dp"
+        android:layout_height="276dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.414"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.47" />
+        app:layout_constraintVertical_bias="0.468" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
