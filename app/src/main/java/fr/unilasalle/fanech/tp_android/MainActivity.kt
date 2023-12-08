@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             {
                 //println(response.body()?.string())
 
-                // TODO: 1. Convertir le JSON en liste de produits
                 val mapper = jacksonObjectMapper()
                 var products: List<Product> = mapper.readValue(response.body()?.string()!!)
                 products.forEach { println(it) }
