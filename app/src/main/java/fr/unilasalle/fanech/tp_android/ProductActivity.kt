@@ -17,5 +17,6 @@ class ProductActivity : AppCompatActivity()
         setContentView(binding.root) // R.layout.activity_product
 
         //binding.textView2.text = intent.extras?.getString("value")
+        binding.productNameTextView.text = intent.extras?.getString("id")
     }
 }
