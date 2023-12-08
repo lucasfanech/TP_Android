@@ -14,9 +14,9 @@ class ProductsAdapter(private var productList : ArrayList<Product>) : RecyclerVi
         val price: TextView = itemView.findViewById(R.id.productPrice)
         val image: ImageView = itemView.findViewById(R.id.productImage)
         fun bind(item: Product) {
-            title.text = item.getTitle();
-            price.text = item.getPrice().toString();
-            Glide.with(itemView.context).load(item.getImage()).into(image)
+            title.text = item.title
+            price.text = item.price.toString()
+            Glide.with(itemView.context).load(item.image).into(image)
         }
     }
 
