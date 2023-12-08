@@ -17,6 +17,11 @@ class ProductActivity : AppCompatActivity()
         setContentView(binding.root) // R.layout.activity_product
 
         //binding.textView2.text = intent.extras?.getString("value")
-        binding.productNameTextView.text = intent.extras?.getString("id")
+        binding.productNameTextView.text = intent.extras?.getString("title")
+        binding.productPriceTextView.text = intent.extras?.getString("price")
+        binding.productDescTextView.text = intent.extras?.getString("description")
+        binding.productCategoryTextView.text = intent.extras?.getString("category")
+        binding.productReviewTextView.text = intent.extras?.getString("rating")
+        binding.productReviewsNbTextView.text = intent.extras?.getString("count")
     }
 }
