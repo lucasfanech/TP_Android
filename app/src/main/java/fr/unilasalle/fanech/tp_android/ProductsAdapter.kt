@@ -15,7 +15,7 @@ class ProductsAdapter(private var productList : ArrayList<Product>) : RecyclerVi
         val image: ImageView = itemView.findViewById(R.id.productImage)
         fun bind(item: Product) {
             title.text = item.title
-            price.text = item.price.toString()
+            price.text = item.price.toString()+"€"
             Glide.with(itemView.context).load(item.image).into(image)
         }
     }
