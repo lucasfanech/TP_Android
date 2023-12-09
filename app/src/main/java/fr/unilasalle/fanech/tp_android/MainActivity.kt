@@ -38,6 +38,13 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener, Adap
         categoryList.add("All categories")
 
 
+        binding.cart.setOnClickListener {
+            val cartIntent = Intent(applicationContext, CartActivity::class.java)
+            cartIntent.putExtra("cartList", cartList)
+            startActivity(cartIntent)
+        }
+
+
         viewModel = RetrofitViewModel(RetrofitApi.getService())
         viewModel.products.observe(this) {
             if (it != null) {
@@ -71,7 +78,7 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener, Adap
         }
 
         // category spinner
-        val categorySpinner: Spinner = findViewById(R.id.categoriesSpinner)
+        val categorySpinner: Spinner = binding.categoriesSpinner
         categorySpinner.onItemSelectedListener = this
         // Create an ArrayAdapter using the category list and a default spinner layout
         ArrayAdapter(
@@ -103,7 +110,6 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener, Adap
             originalProductList
         } else {
             originalProductList.filter { it.category == selectedCategory }
-
         }
         productList.clear()
         productList.addAll(filteredProducts)

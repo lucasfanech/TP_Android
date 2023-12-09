@@ -21,7 +21,8 @@ class ProductActivity : AppCompatActivity()
         setContentView(binding.root) // R.layout.activity_product
 
         //binding.textView2.text = intent.extras?.getString("value")
-        val product = intent.getParcelableExtra("product") as? Product
+        //val product = intent.getParcelableExtra("product") as? Product
+        val product = intent.getParcelableExtra("product",Product::class.java)
         binding.productNameTextView.text        = product?.title
         binding.productPriceTextView.text       = product?.price.toString().plus("€")
         binding.productDescTextView.text        = product?.description
