@@ -22,7 +22,7 @@ class ProductsAdapter(
         val image: ImageView = itemView.findViewById(R.id.productImage)
         val addToCartImage : ImageView = itemView.findViewById(R.id.addToCart)
         fun bind(item: Product) {
-            title.text = item.title
+            title.text = if (item.title.length > 18) item.title.substring(0, 18) + "..." else item.title
             price.text = item.price.toString() + "€"
             Glide.with(itemView.context).load(item.image).into(image)
 
