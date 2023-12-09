@@ -1,21 +1,25 @@
 package fr.unilasalle.fanech.tp_android
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AlertDialog
 import fr.unilasalle.fanech.tp_android.databinding.ActivityMainBinding
 import okhttp3.OkHttpClient
 
-class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
+class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener, AdapterView.OnItemSelectedListener
 {
     private lateinit var binding: ActivityMainBinding
     private lateinit var productsAdapter: ProductsAdapter
     private val client = OkHttpClient()
+    private var originalProductList = ArrayList<Product>()
     private var productList = ArrayList<Product>()
     private var categoryList = ArrayList<String>()
     private var cartList    = ArrayList<Product>()
@@ -31,12 +35,15 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
 
 
         productList.add(Product(1,"Album C'est pas des LOL",9.99f,"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnDwLhK-z_u-lD0AUlHyeKZ5Wgb5yn6s6_fg&usqp=CAU","Meilleur album du J","chef d'oeuvre",Rating(5.0f,1)))
+        categoryList.add("All categories")
+
 
         viewModel = RetrofitViewModel(RetrofitApi.getService())
         viewModel.products.observe(this) {
             if (it != null) {
                 for (product in it) {
                     productList.add(product)
+                    originalProductList.add(product)
                 }
             } else {
                 print("error")
@@ -65,6 +72,7 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
 
         // category spinner
         val categorySpinner: Spinner = findViewById(R.id.categoriesSpinner)
+        categorySpinner.onItemSelectedListener = this
         // Create an ArrayAdapter using the category list and a default spinner layout
         ArrayAdapter(
             this,
@@ -75,10 +83,6 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             categorySpinner.adapter = adapter
         }
-
-
-
-
     }
     override fun oncClickAddToCart(position: Product) {
         cartList.add(position)
@@ -91,7 +95,23 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
         val intent = Intent(applicationContext, ProductActivity::class.java);
         intent.putExtra("product", position);
         startActivity(intent)
+    }
 
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+        val selectedCategory = parent?.getItemAtPosition(pos).toString()
+        val filteredProducts = if (selectedCategory == "All categories") {
+            originalProductList
+        } else {
+            originalProductList.filter { it.category == selectedCategory }
+
+        }
+        productList.clear()
+        productList.addAll(filteredProducts)
+        productsAdapter.notifyDataSetChanged()
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback
     }
 
 
