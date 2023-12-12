@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener, Adap
 
         binding.cart.setOnClickListener {
             val cartIntent = Intent(applicationContext, CartActivity::class.java)
+            //cartIntent.putParcelableArrayListExtra("cartList", cartList)
             cartIntent.putExtra("cartList", cartList)
             startActivity(cartIntent)
         }

@@ -7,47 +7,84 @@
 
     <TextView
         android:id="@+id/cartCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_width="66dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="14dp"
-        android:layout_marginBottom="68dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cartPrice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cartRecyclerView"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/cartPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginBottom="68dp"
+        android:layout_width="53dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/purchaseButton"
+        app:layout_constraintEnd_toStartOf="@+id/purchaseButton"
         app:layout_constraintStart_toEndOf="@+id/cartCount"
-        app:layout_constraintTop_toBottomOf="@+id/cartRecyclerView"
-        app:layout_constraintVertical_bias="0.933" />
+        app:layout_constraintTop_toTopOf="@+id/purchaseButton"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/purchaseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="52dp"
-        android:text="Button"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="24dp"
+        android:text="Acheter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.637"
-        app:layout_constraintStart_toEndOf="@+id/cartPrice"
-        app:layout_constraintTop_toBottomOf="@+id/cartRecyclerView" />
+        app:layout_constraintHorizontal_bias="0.462"
+        app:layout_constraintStart_toEndOf="@+id/cartPrice" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
-        android:layout_width="409dp"
-        android:layout_height="629dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/purchaseButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/titleCart"
+        app:layout_constraintVertical_bias="0.116" />
+
+    <ImageView
+        android:id="@+id/iconCart"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/cartRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/titleCart"
+        app:layout_constraintHorizontal_bias="0.387"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.08"
+        app:srcCompat="@drawable/cart" />
+
+    <TextView
+        android:id="@+id/titleCart"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:text="Panier"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iconCart"
+        app:layout_constraintStart_toEndOf="@+id/iconCart"
+        app:layout_constraintTop_toTopOf="@+id/iconCart" />
 </androidx.constraintlayout.widget.ConstraintLayout>
