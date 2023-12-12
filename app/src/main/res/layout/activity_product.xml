@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -7,15 +8,94 @@
 
     <TextView
         android:id="@+id/productNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
+        android:layout_width="188dp"
+        android:layout_height="136dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="44dp"
+        android:autoText="true"
+        android:isScrollContainer="true"
         android:text="Product Name"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/productDescTextView"
+        android:layout_width="347dp"
+        android:layout_height="241dp"
+        android:layout_marginBottom="88dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="127dp"
+        android:layout_height="119dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintEnd_toStartOf="@+id/productNameTextView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.087" />
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/productReviewTextView"
+        android:layout_width="71dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="61dp"
+        android:text="TextView"
+        android:textColor="#E3A406"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/productDescTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.451" />
+
+    <TextView
+        android:id="@+id/productPriceTextView"
+        android:layout_width="76dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="32dp"
+        android:text="TextView"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/productReviewsNbTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/productReviewsNbTextView"
+        app:layout_constraintVertical_bias="0.29" />
+
+    <TextView
+        android:id="@+id/productReviewsNbTextView"
+        android:layout_width="125dp"
+        android:layout_height="47dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/productReviewTextView"
+        app:layout_constraintEnd_toStartOf="@+id/productPriceTextView"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toEndOf="@+id/productReviewTextView"
+        app:layout_constraintTop_toTopOf="@+id/productReviewTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/productCategoryTextView"
+        android:layout_width="178dp"
+        android:layout_height="27dp"
+        android:text="TextView"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/productNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/productNameTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.484" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

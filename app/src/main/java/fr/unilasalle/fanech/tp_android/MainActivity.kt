@@ -1,39 +1,71 @@
 package fr.unilasalle.fanech.tp_android
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import androidx.appcompat.app.AlertDialog
 import fr.unilasalle.fanech.tp_android.databinding.ActivityMainBinding
-import okhttp3.Call
-import okhttp3.Callback
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
 
-class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
+class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener, AdapterView.OnItemSelectedListener
 {
     private lateinit var binding: ActivityMainBinding
     private lateinit var productsAdapter: ProductsAdapter
     private val client = OkHttpClient()
+    private var originalProductList = ArrayList<Product>()
     private var productList = ArrayList<Product>()
+    private var categoryList = ArrayList<String>()
+    private var cartList    = ArrayList<Product>()
     private lateinit var viewModel: RetrofitViewModel
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val intent = Intent(applicationContext, ProductActivity::class.java)
         setContentView(binding.root) // R.layout.activity_main
 
+
+        productList.add(Product(1,"Album C'est pas des LOL",9.99f,"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnDwLhK-z_u-lD0AUlHyeKZ5Wgb5yn6s6_fg&usqp=CAU","Meilleur album du J","chef d'oeuvre",Rating(5.0f,1)))
+        categoryList.add("All categories")
+
+
+        binding.cart.setOnClickListener {
+            val cartIntent = Intent(applicationContext, CartActivity::class.java)
+            cartIntent.putExtra("cartList", cartList)
+            startActivity(cartIntent)
+        }
+
+
         viewModel = RetrofitViewModel(RetrofitApi.getService())
         viewModel.products.observe(this) {
-            for (product in it) {
-                productList.add(product)
+            if (it != null) {
+                for (product in it) {
+                    productList.add(product)
+                    originalProductList.add(product)
+                }
+            } else {
+                print("error")
             }
             productsAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.categories.observe(this) {
+            if (it != null) {
+                for (category in it) {
+                    categoryList.add(category)
+                }
+            } else {
+                print("error")
+            }
         }
         // Products recyclerView
         val recyclerViewVariable = binding.productsRecyclerView
@@ -45,28 +77,47 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener
             adapter = productsAdapter
         }
 
-
-
-
-
-
+        // category spinner
+        val categorySpinner: Spinner = binding.categoriesSpinner
+        categorySpinner.onItemSelectedListener = this
+        // Create an ArrayAdapter using the category list and a default spinner layout
+        ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            categoryList
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            categorySpinner.adapter = adapter
+        }
+    }
+    override fun oncClickAddToCart(position: Product) {
+        cartList.add(position)
+        // Pop up message
+        Log.d("cartList", cartList.toString())
+        binding.cartProductCount.text = cartList.size.toString()
+    }
+    override fun onClick(position: Product)
+    {
+        val intent = Intent(applicationContext, ProductActivity::class.java);
+        intent.putExtra("product", position);
+        startActivity(intent)
     }
 
-    override fun onClick(product: Product)
-    {
-        print("clicked")
-        val intent = Intent(applicationContext, ProductActivity::class.java)
-        intent.putExtra("id", product.id.toString());
-        intent.putExtra("title", product.title);
-        intent.putExtra("price", product.price.toString());
-        intent.putExtra("image", product.image);
-        intent.putExtra("description", product.description);
-        intent.putExtra("category", product.category);
-        intent.putExtra("rate", product.rating.rate.toString());
-        intent.putExtra("count", product.rating.count.toString());
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+        val selectedCategory = parent?.getItemAtPosition(pos).toString()
+        val filteredProducts = if (selectedCategory == "All categories") {
+            originalProductList
+        } else {
+            originalProductList.filter { it.category == selectedCategory }
+        }
+        productList.clear()
+        productList.addAll(filteredProducts)
+        productsAdapter.notifyDataSetChanged()
+    }
 
-        startActivity(intent)
-
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback
     }
 
 
