@@ -27,6 +27,13 @@ class RoomViewModel(private val database: AppDatabase) : ViewModel()
         database.productDao().deleteProductById(cartId)
     }
 
+    fun updateProductCartId(id: Int, cartId: Int) {
+        database.productDao().updateProductCartId(id, cartId)
+    }
+
+    fun getMaxCartId(): Int {
+        return database.productDao().getMaxCartId()
+    }
 
 
 

@@ -40,9 +40,14 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnClickListener,
 
         productViewModel = RoomViewModelFactory(db).create(RoomViewModel::class.java)
         db.productDao().getAllProducts().forEach {
-            cartList.add(Product(it.id, it.name, it.price, it.image, it.description, it.category, Rating(it.rate, it.rateCount)))
+            if (it.cartId == 0)
+            {
+                cartList.add(Product(it.id, it.name, it.price, it.image, it.description, it.category, Rating(it.rate, it.rateCount)))
+            }
             binding.cartProductCount.text = cartList.size.toString()
         }
+
+        cartProductCount = db.productDao().getMaxCartId();
 
 
         productList.add(
@@ -64,6 +69,7 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnClickListener,
             val cartIntent = Intent(applicationContext, CartActivity::class.java)
             //cartIntent.putParcelableArrayListExtra("cartList", cartList)
             cartIntent.putExtra("cartList",  cartList)
+            cartIntent.putExtra("cartCounter", cartProductCount)
             startActivity(cartIntent)
         }
 
@@ -113,6 +119,12 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnClickListener,
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             categorySpinner.adapter = adapter
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cartList = intent.getParcelableArrayListExtra("cartList") ?: ArrayList<Product>()
+        binding.cartProductCount.text = cartList.size.toString()
     }
 
     override fun oncClickAddToCart(position: Product) {
