@@ -12,7 +12,7 @@ data class Product(
     val image: String,
     val description: String,
     val category: String,
-    val rating: @RawValue Rating
+    val rating: Rating
 ) : Parcelable {
     override fun toString(): String {
         return "Product(id=$id, title='$title', price=$price, image='$image', description='$description', category='$category', rating=$rating)"
