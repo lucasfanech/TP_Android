@@ -26,7 +26,10 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
 
 
         //Use the type-safer getParcelableArrayListExtra
-        cartList = intent.getParcelableArrayListExtra("cartList",Product::class.java) as ArrayList<Product>
+        //cartList = intent.getParcelableArrayListExtra("cartList",Product::class.java) as ArrayList<Product>
+        //cartList = intent.getParcelableArrayListExtra("cartList") as ArrayList<Product>
+        //cartList = intent.getSerializableExtra("cartList") as ArrayList<Product>
+        cartList = intent.getParcelableArrayListExtra<Product>("cartList") ?: ArrayList<Product>()
 
         val recyclerView = binding.cartRecyclerView
         cartAdapter = CartAdapter(cartList, this)
