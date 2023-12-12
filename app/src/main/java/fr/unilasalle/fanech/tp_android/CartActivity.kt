@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import fr.unilasalle.fanech.tp_android.databinding.ActivityCartBinding
+import java.util.ArrayList
 
 class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
 
@@ -27,9 +28,6 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
 
 
         //Use the type-safer getParcelableArrayListExtra
-        //cartList = intent.getParcelableArrayListExtra("cartList",Product::class.java) as ArrayList<Product>
-        //cartList = intent.getParcelableArrayListExtra("cartList") as ArrayList<Product>
-        //cartList = intent.getSerializableExtra("cartList") as ArrayList<Product>
         cartList = intent.getParcelableArrayListExtra<Product>("cartList") ?: ArrayList<Product>()
 
         val recyclerView = binding.cartRecyclerView

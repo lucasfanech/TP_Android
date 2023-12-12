@@ -56,5 +56,10 @@ class ProductsAdapter(
         val item = productList[position]
         holder.bind(item)
 
+        fun onClick(position: Product) {
+            holder.itemView.setOnClickListener {
+
+            }
+        }
     }
 }

@@ -1,47 +1,69 @@
 package fr.unilasalle.fanech.tp_android
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import androidx.appcompat.app.AlertDialog
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import fr.unilasalle.fanech.tp_android.databinding.ActivityMainBinding
-import okhttp3.OkHttpClient
 
-class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener, AdapterView.OnItemSelectedListener
-{
+class MainActivity : AppCompatActivity(), ProductsAdapter.OnClickListener,
+    AdapterView.OnItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var productsAdapter: ProductsAdapter
-    private val client = OkHttpClient()
     private var originalProductList = ArrayList<Product>()
     private var productList = ArrayList<Product>()
     private var categoryList = ArrayList<String>()
-    private var cartList    = ArrayList<Product>()
+    private var cartList = java.util.ArrayList<Product>()
     private lateinit var viewModel: RetrofitViewModel
+    private lateinit var db: AppDatabase
+    private lateinit var productViewModel: RoomViewModel
+    private var cartProductCount = 0
 
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val intent = Intent(applicationContext, ProductActivity::class.java)
+        //val intent = Intent(applicationContext, ProductActivity::class.java)
         setContentView(binding.root) // R.layout.activity_main
 
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "product-database"
+        ).allowMainThreadQueries().build()
 
-        productList.add(Product(1,"Album C'est pas des LOL",9.99f,"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnDwLhK-z_u-lD0AUlHyeKZ5Wgb5yn6s6_fg&usqp=CAU","Meilleur album du J","chef d'oeuvre",Rating(5.0f,1)))
+        productViewModel = RoomViewModelFactory(db).create(RoomViewModel::class.java)
+        db.productDao().getAllProducts().forEach {
+            cartList.add(Product(it.id, it.name, it.price, it.image, it.description, it.category, Rating(it.rate, it.rateCount)))
+            binding.cartProductCount.text = cartList.size.toString()
+        }
+
+
+        productList.add(
+            Product(
+                1,
+                "Album C'est pas des LOL",
+                9.99f,
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnDwLhK-z_u-lD0AUlHyeKZ5Wgb5yn6s6_fg&usqp=CAU",
+                "Meilleur album du J",
+                "chef d'oeuvre",
+                Rating(5.0f, 1)
+            )
+        )
         categoryList.add("All categories")
 
 
         binding.cart.setOnClickListener {
+            Log.e("aladin", cartList.size.toString())
             val cartIntent = Intent(applicationContext, CartActivity::class.java)
             //cartIntent.putParcelableArrayListExtra("cartList", cartList)
-            cartIntent.putExtra("cartList", cartList)
+            cartIntent.putExtra("cartList",  cartList)
             startActivity(cartIntent)
         }
 
@@ -92,15 +114,28 @@ class MainActivity : AppCompatActivity() , ProductsAdapter.OnClickListener, Adap
             categorySpinner.adapter = adapter
         }
     }
+
     override fun oncClickAddToCart(position: Product) {
         cartList.add(position)
         // Pop up message
         Log.d("cartList", cartList.toString())
         binding.cartProductCount.text = cartList.size.toString()
+        db.productDao().insertProduct(ProductEntity(
+            productId = position.id,
+            cartId = 0,
+            name = position.title,
+            price = position.price,
+            image = position.image,
+            description = position.description,
+            category = position.category,
+            rate = position.rating.rate,
+            rateCount = position.rating.count
+        ))
+
     }
-    override fun onClick(position: Product)
-    {
-        val intent = Intent(applicationContext, ProductActivity::class.java);
+
+    override fun onClick(position: Product) {
+        val intent = Intent(applicationContext, ProductActivity::class.java)
         intent.putExtra("product", position);
         startActivity(intent)
     }
