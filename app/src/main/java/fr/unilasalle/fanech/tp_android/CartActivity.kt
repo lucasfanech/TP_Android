@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import fr.unilasalle.fanech.tp_android.databinding.ActivityCartBinding
 import java.util.ArrayList
 
@@ -79,6 +78,14 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
             builder.show()
         }
 
+    }
+
+    override fun onClickRemove(position: Product) {
+        cartList.remove(position)
+        binding.cartCount.text = cartList.size.toString() + " items"
+        binding.cartPrice.text = "Total : " + "%.2f".format(cartList.sumOf{it.price.toDouble()}) + "€"
+        intent.putExtra("cartList", cartList)
+        cartAdapter.notifyDataSetChanged()
     }
     override fun onClick(position: Product) {
         val intent = Intent(applicationContext, ProductActivity::class.java);
