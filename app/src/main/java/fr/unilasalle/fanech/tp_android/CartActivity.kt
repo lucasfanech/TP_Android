@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import fr.unilasalle.fanech.tp_android.databinding.ActivityCartBinding
 import java.util.ArrayList
 
