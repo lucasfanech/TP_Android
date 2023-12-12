@@ -34,7 +34,9 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
             AppDatabase::class.java, "product-database"
         ).allowMainThreadQueries().build()
 
+
         productViewModel = RoomViewModelFactory(db).create(RoomViewModel::class.java)
+
 
         //Use the type-safer getParcelableArrayListExtra
         cartList = intent.getParcelableArrayListExtra<Product>("cartList") ?: ArrayList<Product>()
@@ -60,12 +62,12 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
                 binding.cartPrice.text = "Total : " + "%.2f".format(cartList.sumOf{it.price.toDouble()}) + "€"
                 cartAdapter.notifyDataSetChanged()
 
-
-                db.productDao().getAllProducts().forEach {
-                    db.productDao().updateProductCartId(it.id, cartCounter)
+                cartList.forEach {
+                    productViewModel.updateProductCartId(it.id, 0)
                 }
 
                 val intent = Intent()
+                cartCounter++
                 intent.putExtra("cartList", cartList)
                 intent.putExtra("cartCounter", cartCounter)
                 setResult(RESULT_OK, intent)
@@ -88,6 +90,10 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
         cartList.remove(position)
         binding.cartCount.text = cartList.size.toString() + " items"
         binding.cartPrice.text = "Total : " + "%.2f".format(cartList.sumOf{it.price.toDouble()}) + "€"
+
+        Log.e("cartCounter", cartCounter.toString())
+        productViewModel.deleteProductByCartIdAndId(cartCounter, position.id)
+
         val intent = Intent()
         intent.putExtra("cartList", cartList)
         setResult(RESULT_OK, intent)

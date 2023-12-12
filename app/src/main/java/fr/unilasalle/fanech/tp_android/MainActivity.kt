@@ -64,11 +64,14 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnClickListener,
             {
                 cartList.add(Product(it.id, it.name, it.price, it.image, it.description, it.category, Rating(it.rate, it.rateCount)))
             }
+
+            Log.e("product", it.toString())
+
             binding.cartProductCount.text = cartList.size.toString()
         }
 
         cartProductCount = db.productDao().getMaxCartId();
-
+        Log.e("cartProductCount", cartProductCount.toString())
 
         productList.add(
             Product(
