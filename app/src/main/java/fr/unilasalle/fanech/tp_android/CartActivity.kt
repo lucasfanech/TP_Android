@@ -80,20 +80,10 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
         }
 
     }
-
-
     override fun onClick(position: Product) {
         val intent = Intent(applicationContext, ProductActivity::class.java);
         intent.putExtra("product", position);
         startActivity(intent)
-    }
-
-    override fun onClickRemove(position: Product) {
-        cartList.remove(position)
-        binding.cartCount.text = cartList.size.toString() + " items"
-        binding.cartPrice.text = "Total : " + "%.2f".format(cartList.sumOf{it.price.toDouble()}) + "€"
-        intent.putExtra("cartList", cartList)
-        cartAdapter.notifyDataSetChanged()
     }
 
 }
