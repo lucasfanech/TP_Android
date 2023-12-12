@@ -67,6 +67,7 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
 
                 val intent = Intent()
                 intent.putExtra("cartList", cartList)
+                intent.putExtra("cartCounter", cartCounter)
                 setResult(RESULT_OK, intent)
                 finish()
 
@@ -79,13 +80,17 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
             builder.show()
         }
 
+
+
     }
 
     override fun onClickRemove(position: Product) {
         cartList.remove(position)
         binding.cartCount.text = cartList.size.toString() + " items"
         binding.cartPrice.text = "Total : " + "%.2f".format(cartList.sumOf{it.price.toDouble()}) + "€"
+        val intent = Intent()
         intent.putExtra("cartList", cartList)
+        setResult(RESULT_OK, intent)
         cartAdapter.notifyDataSetChanged()
     }
     override fun onClick(position: Product) {

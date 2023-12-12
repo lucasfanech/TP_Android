@@ -1,6 +1,7 @@
 package fr.unilasalle.fanech.tp_android
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import fr.unilasalle.fanech.tp_android.databinding.ActivityMainBinding
@@ -24,6 +26,24 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnClickListener,
     private lateinit var db: AppDatabase
     private lateinit var productViewModel: RoomViewModel
     private var cartProductCount = 0
+
+    private val getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: ArrayList<Product>? = result.data?.getParcelableArrayListExtra("cartList")
+            val cartCounter: Int? = result.data?.getIntExtra("cartCounter", 0)
+            if (data != null) {
+                cartList = data
+                binding.cartProductCount.text = cartList.size.toString()
+            }
+            if (cartCounter != null) {
+                cartProductCount = cartCounter
+            }
+
+
+
+
+        }
+    }
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -70,7 +90,8 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnClickListener,
             //cartIntent.putParcelableArrayListExtra("cartList", cartList)
             cartIntent.putExtra("cartList",  cartList)
             cartIntent.putExtra("cartCounter", cartProductCount)
-            startActivity(cartIntent)
+            //startActivity(cartIntent)
+            getResult.launch(cartIntent)
         }
 
 
@@ -123,8 +144,9 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-        cartList = intent.getParcelableArrayListExtra("cartList") ?: ArrayList<Product>()
-        binding.cartProductCount.text = cartList.size.toString()
+        //Check if the cart has been updated and update the cart counter on the db
+
+
     }
 
     override fun oncClickAddToCart(position: Product) {
