@@ -27,6 +27,10 @@ class RoomViewModel(private val database: AppDatabase) : ViewModel()
         database.productDao().deleteProductById(cartId)
     }
 
+    fun deleteProductByCartIdAndId(cartId: Int, id: Int) {
+        database.productDao().deleteProductByCartIdAndId(cartId, id)
+    }
+
     fun updateProductCartId(id: Int, cartId: Int) {
         database.productDao().updateProductCartId(id, cartId)
     }
