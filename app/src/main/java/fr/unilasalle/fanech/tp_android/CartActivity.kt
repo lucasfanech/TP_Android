@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import fr.unilasalle.fanech.tp_android.databinding.ActivityCartBinding
 import java.util.ArrayList
 
@@ -15,8 +16,10 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
     private lateinit var binding: ActivityCartBinding
     private lateinit var cartAdapter: CartAdapter
     private var cartList    = ArrayList<Product>()
+    private var cartCounter = 0
     private val total : Float = 0.0f
-
+    private lateinit var db: AppDatabase
+    private lateinit var productViewModel: RoomViewModel
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +29,16 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root) // R.layout.activity_cart
 
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "product-database"
+        ).allowMainThreadQueries().build()
+
+        productViewModel = RoomViewModelFactory(db).create(RoomViewModel::class.java)
 
         //Use the type-safer getParcelableArrayListExtra
         cartList = intent.getParcelableArrayListExtra<Product>("cartList") ?: ArrayList<Product>()
-
+        cartCounter = intent.getIntExtra("cartCounter", 0)
         val recyclerView = binding.cartRecyclerView
         cartAdapter = CartAdapter(cartList, this)
 
@@ -50,8 +59,17 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
                 binding.cartCount.text = cartList.size.toString() + " items"
                 binding.cartPrice.text = "Total : " + "%.2f".format(cartList.sumOf{it.price.toDouble()}) + "€"
                 cartAdapter.notifyDataSetChanged()
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
+
+
+                db.productDao().getAllProducts().forEach {
+                    db.productDao().updateProductCartId(it.id, cartCounter)
+                }
+
+                val intent = Intent()
+                intent.putExtra("cartList", cartList)
+                setResult(RESULT_OK, intent)
+                finish()
+
                 //  make a toast to display the current selected item
                 Toast.makeText(this, "Purchase done", Toast.LENGTH_SHORT).show()
             }
@@ -62,10 +80,20 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
         }
 
     }
+
+
     override fun onClick(position: Product) {
         val intent = Intent(applicationContext, ProductActivity::class.java);
         intent.putExtra("product", position);
         startActivity(intent)
+    }
+
+    override fun onClickRemove(position: Product) {
+        cartList.remove(position)
+        binding.cartCount.text = cartList.size.toString() + " items"
+        binding.cartPrice.text = "Total : " + "%.2f".format(cartList.sumOf{it.price.toDouble()}) + "€"
+        intent.putExtra("cartList", cartList)
+        cartAdapter.notifyDataSetChanged()
     }
 
 }

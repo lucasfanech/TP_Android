@@ -3,6 +3,7 @@ package fr.unilasalle.fanech.tp_android
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ class CartAdapter(private var cartList: ArrayList<Product>, private val listener
         val title: TextView = itemView.findViewById(R.id.productTitleCart)
         val price: TextView = itemView.findViewById(R.id.productPriceCart)
         val image: ImageView = itemView.findViewById(R.id.productImageCart)
+        val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
 
         fun bind(item: Product)
         {
@@ -29,12 +31,18 @@ class CartAdapter(private var cartList: ArrayList<Product>, private val listener
                 listener.onClick(item)
             }
 
+            deleteButton.setOnClickListener {
+                listener.onClickRemove(item)
+            }
+
         }
 
     }
 
     interface OnClickListener {
         fun onClick(position: Product)
+
+        fun onClickRemove(position: Product)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

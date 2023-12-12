@@ -21,4 +21,10 @@ interface ProductDataAccessObject
 
     @Query("DELETE FROM product WHERE productId = :id")
     fun deleteProductById(id: Int)
+
+    @Query("UPDATE product SET cartId = :cartId WHERE productId = :id")
+    fun updateProductCartId(id: Int, cartId: Int)
+
+    @Query("SELECT MAX(cartId) FROM product")
+    fun getMaxCartId(): Int
 }
