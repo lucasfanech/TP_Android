@@ -27,7 +27,7 @@ class ProductActivity : AppCompatActivity()
         binding.productPriceTextView.text       = product?.price.toString().plus("€")
         binding.productDescTextView.text        = product?.description
         binding.productCategoryTextView.text    = product?.category
-        binding.productReviewTextView.text      = product?.rating?.rate.toString()
+        binding.productReviewTextView.text      = product?.rating?.rate.toString().plus("★")
         binding.productReviewsNbTextView.text   = product?.rating?.count.toString().plus(" reviews")
         //Glide.with(itemView.context).load(item.image).into(image)
         binding.imageView2.let {

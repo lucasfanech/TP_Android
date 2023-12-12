@@ -8,14 +8,14 @@
 
     <TextView
         android:id="@+id/productNameTextView"
-        android:layout_width="188dp"
-        android:layout_height="136dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd="32dp"
         android:autoText="true"
         android:isScrollContainer="true"
         android:text="Product Name"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -38,9 +38,10 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="127dp"
-        android:layout_height="119dp"
-        android:layout_marginStart="48dp"
+        android:layout_width="110dp"
+        android:layout_height="92dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/productNameTextView"
         app:layout_constraintEnd_toStartOf="@+id/productNameTextView"
         app:layout_constraintHorizontal_bias="0.0"
