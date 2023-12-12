@@ -50,8 +50,7 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
                 binding.cartCount.text = cartList.size.toString() + " items"
                 binding.cartPrice.text = "Total : " + "%.2f".format(cartList.sumOf{it.price.toDouble()}) + "€"
                 cartAdapter.notifyDataSetChanged()
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
+                finish()
                 //  make a toast to display the current selected item
                 Toast.makeText(this, "Purchase done", Toast.LENGTH_SHORT).show()
             }
