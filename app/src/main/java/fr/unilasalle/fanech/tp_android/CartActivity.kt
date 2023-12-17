@@ -82,8 +82,10 @@ class CartActivity : AppCompatActivity(), CartAdapter.OnClickListener {
             builder.show()
         }
 
-
-
+        binding.historyIcon.setOnClickListener() {
+            val intent = Intent(applicationContext, HistoryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onClickRemove(position: Product) {
